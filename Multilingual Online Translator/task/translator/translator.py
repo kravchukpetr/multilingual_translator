@@ -3,33 +3,31 @@ from bs4 import BeautifulSoup
 import sys
 
 
-def print_result(lang, translate_dict, example_dict, n_translate):
-    for lang_key, tr_list in translate_dict.items():
+def print_result(translate_dict, n_translate):
+    for lang, tr_list in translate_dict.items():
         print(lang.capitalize(), "Translations:")
-        for i, translate in enumerate(tr_list):
+        for i, translate in enumerate(tr_list['translate']):
             if i < n_translate:
                 print(translate)
         print()
-    for lang_key, ex_list in example_dict.items():
         print(lang.capitalize(), "Examples:")
-        for i, example in enumerate(ex_list):
+        for i, example in enumerate(tr_list['example']):
             if i < n_translate * 2:
                 print(example)
                 if i % 2 != 0:
                     print()
 
 
-def save_to_file(lang, translate_dict, example_dict, n_translate, word):
+def save_to_file(translate_dict, n_translate, word):
     original_stdout = sys.stdout
     with open(word + '.txt', 'w+', encoding="utf-8") as f:
         sys.stdout = f
-        print_result(lang, translate_dict, example_dict, n_translate)
+        print_result(translate_dict, n_translate)
         sys.stdout = original_stdout
 
 
 n_translate = 1
 translate_dict = {}
-example_dict = {}
 lang_from = None
 lang_to = None
 headers = {'User-Agent': 'Mozilla/5.0'}
@@ -73,11 +71,12 @@ for lang_key, lang_val in lang_dict.items():
                 for translate in translate_result:
                     # print(str(translate.text).strip())
                     translate_list.append(str(translate.text).strip())
-                translate_dict[lang_dict[lang_key]] = translate_list
+                translate_dict[lang_dict[lang_key]] = {}
+                translate_dict[lang_dict[lang_key]]['translate'] = translate_list
                 example_result = soup.find(id="examples-content").find_all("span", {"class": "text"})
                 for example in example_result:
                     example_list.append(example.text.strip())
-                example_dict[lang_dict[lang_key]] = example_list
-                print_result(lang_dict[lang_key], translate_dict, example_dict, n_translate)
-                save_to_file(lang_dict[lang_key], translate_dict, example_dict, n_translate, word)
+                translate_dict[lang_dict[lang_key]]['example'] = example_list
+print_result(translate_dict, n_translate)
+save_to_file(translate_dict, n_translate, word)
 

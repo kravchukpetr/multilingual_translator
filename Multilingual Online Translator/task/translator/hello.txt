@@ -1,82 +1,82 @@
-Turkish Translations:
+Arabic Translations:
 مرحبا
 
-Turkish Translations:
-hallo
-
-Turkish Translations:
-hola
-
-Turkish Translations:
-bonjour
-
-Turkish Translations:
-שלום
-
-Turkish Translations:
-こんにちは
-
-Turkish Translations:
-gedag
-
-Turkish Translations:
-cześć
-
-Turkish Translations:
-olá
-
-Turkish Translations:
-salut
-
-Turkish Translations:
-привет
-
-Turkish Translations:
-selam
-
-Turkish Examples:
+Arabic Examples:
 margot, say hello to pavlov.
 (مارجوت)،قولي مرحبًا لـ (بافالوف).
 
-Turkish Examples:
+German Translations:
+hallo
+
+German Examples:
 Finally got a personalized hello from Earl.
 Ich habe endlich ein personifiziertes hallo von Earl bekommen.
 
-Turkish Examples:
+Spanish Translations:
+hola
+
+Spanish Examples:
 Well, hello, Miss Anchor-liar.
 Bien, hola, señorita presentadora de mentiras.
 
-Turkish Examples:
+French Translations:
+bonjour
+
+French Examples:
 Goodbye England and hello the Netherlands...
 Au revoir l'Angleterre et bonjour les Pays-Bas...
 
-Turkish Examples:
+Hebrew Translations:
+שלום
+
+Hebrew Examples:
 How come they never say hello?
 איך זה שהן אף פעם לא אומרות שלום.
 
-Turkish Examples:
+Japanese Translations:
+こんにちは
+
+Japanese Examples:
 The little boy said hello to me.
 小さな男の子が私にこんにちはと言った。
 
-Turkish Examples:
+Dutch Translations:
+gedag
+
+Dutch Examples:
 Flirting with every girl says hello.
 Die flirt met elk meisje dat gedag zegt.
 
-Turkish Examples:
+Polish Translations:
+cześć
+
+Polish Examples:
 You had me at "hello".
 Wystarczyło mi twoje "cześć".
 
-Turkish Examples:
+Portuguese Translations:
+olá
+
+Portuguese Examples:
 That was my last kiss hello.
 Pois eu garanto que aquele foi o meu último beijo de olá.
 
-Turkish Examples:
+Romanian Translations:
+salut
+
+Romanian Examples:
 I came by to say hello.
 Am avut o pauză de masă și am trecut să te salut.
 
-Turkish Examples:
+Russian Translations:
+привет
+
+Russian Examples:
 Tell her slipping' Jimmy says hello.
 Передай ей, что Скользкий Джимми передает ей привет.
+
+Turkish Translations:
+selam
 
 Turkish Examples:
 Mash Sultan Ali, she said hello.
