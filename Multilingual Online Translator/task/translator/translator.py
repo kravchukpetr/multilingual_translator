@@ -84,7 +84,6 @@ else:
         if lang_key != lang_from:
             if lang_to == 0 or (lang_to != 0 and lang_to == lang_key):
                 url = "https://context.reverso.net/translation/{0}-{1}/{2}".format(lang_dict[lang_from].lower(), lang_dict[lang_key].lower(), word)
-                # print(url)
                 try:
                     r = requests.get(url, headers=headers)
                 except ConnectionError:
@@ -95,7 +94,6 @@ else:
                     soup = BeautifulSoup(r.content, 'html.parser')
                     translate_result = soup.find(id="translations-content").find_all("a")
                     for translate in translate_result:
-                        # print(str(translate.text).strip())
                         translate_list.append(str(translate.text).strip())
                     translate_dict[lang_dict[lang_key]] = {}
                     translate_dict[lang_dict[lang_key]]['translate'] = translate_list
