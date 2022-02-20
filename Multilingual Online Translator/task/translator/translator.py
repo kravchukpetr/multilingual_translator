@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import sys
+import argparse
 
 
 def print_result(translate_dict, n_translate):
@@ -25,8 +26,7 @@ def save_to_file(translate_dict, n_translate, word):
         print_result(translate_dict, n_translate)
         sys.stdout = original_stdout
 
-
-n_translate = 1
+type_input = 0
 translate_dict = {}
 lang_from = None
 lang_to = None
@@ -45,38 +45,51 @@ lang_dict = {
     11: 'Romanian',
     12: 'Russian',
     13: 'Turkish'}
-print("Hello, you're welcome to the translator. Translator supports:")
-for key, value in lang_dict.items():
-    print('{0}: {1}'.format(key, value))
-while lang_from not in lang_dict.keys():
-    lang_from = int(input('Type the number of your language:'))
-while lang_to not in lang_dict.keys() and lang_to !=0:
-    lang_to = int(input("Type the number of language you want to translate to or '0' to translate to all languages:"))
-word = input("Type the word you want to translate:")
-if lang_to != 0:
-    print('You choose "{0}" as a language to translate "{1}".'.format(lang_dict[lang_to], word))
 
-for lang_key, lang_val in lang_dict.items():
-    translate_list = []
-    example_list = []
-    if lang_key != lang_from:
-        if lang_to == 0 or (lang_to != 0 and lang_to == lang_key):
-            url = "https://context.reverso.net/translation/{0}-{1}/{2}".format(lang_dict[lang_from].lower(), lang_dict[lang_key].lower(), word)
-            # print(url)
-            r = requests.get(url, headers=headers)
-            if r.status_code == 200:
-                # print(r.status_code, 'OK')
-                soup = BeautifulSoup(r.content, 'html.parser')
-                translate_result = soup.find(id="translations-content").find_all("a")
-                for translate in translate_result:
-                    # print(str(translate.text).strip())
-                    translate_list.append(str(translate.text).strip())
-                translate_dict[lang_dict[lang_key]] = {}
-                translate_dict[lang_dict[lang_key]]['translate'] = translate_list
-                example_result = soup.find(id="examples-content").find_all("span", {"class": "text"})
-                for example in example_result:
-                    example_list.append(example.text.strip())
-                translate_dict[lang_dict[lang_key]]['example'] = example_list
-print_result(translate_dict, n_translate)
-save_to_file(translate_dict, n_translate, word)
+if type_input == 1:
+    print("Hello, you're welcome to the translator. Translator supports:")
+    for key, value in lang_dict.items():
+        print('{0}: {1}'.format(key, value))
+    while lang_from not in lang_dict.keys():
+        lang_from = int(input('Type the number of your language:'))
+    while lang_to not in lang_dict.keys() and lang_to != 0:
+        lang_to = int(input("Type the number of language you want to translate to or '0' to translate to all languages:"))
+    word = input("Type the word you want to translate:")
+    if lang_to != 0:
+        print('You choose "{0}" as a language to translate "{1}".'.format(lang_dict[lang_to], word))
+    n_translate = 1 if lang_to == 0 else 5
+else:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("lang_from")
+    parser.add_argument("lang_to")
+    parser.add_argument("word")
+    args = parser.parse_args()
+
+    lang_from = [key for key, value in lang_dict.items() if args.lang_from == value.lower()][0]
+    lang_to = 0 if args.lang_to == 'all' else [key for key, value in lang_dict.items() if args.lang_to == value.lower()][0]
+    word = args.word
+    n_translate = 1 if args.lang_to == 'all' else 5
+    for lang_key, lang_val in lang_dict.items():
+        translate_list = []
+        example_list = []
+        if lang_key != lang_from:
+            if lang_to == 0 or (lang_to != 0 and lang_to == lang_key):
+                url = "https://context.reverso.net/translation/{0}-{1}/{2}".format(lang_dict[lang_from].lower(), lang_dict[lang_key].lower(), word)
+                # print(url)
+                r = requests.get(url, headers=headers)
+                if r.status_code == 200:
+                    # print(r.status_code, 'OK')
+                    soup = BeautifulSoup(r.content, 'html.parser')
+                    translate_result = soup.find(id="translations-content").find_all("a")
+                    for translate in translate_result:
+                        # print(str(translate.text).strip())
+                        translate_list.append(str(translate.text).strip())
+                    translate_dict[lang_dict[lang_key]] = {}
+                    translate_dict[lang_dict[lang_key]]['translate'] = translate_list
+                    example_result = soup.find(id="examples-content").find_all("span", {"class": "text"})
+                    for example in example_result:
+                        example_list.append(example.text.strip())
+                    translate_dict[lang_dict[lang_key]]['example'] = example_list
+    print_result(translate_dict, n_translate)
+    save_to_file(translate_dict, n_translate, word)
 

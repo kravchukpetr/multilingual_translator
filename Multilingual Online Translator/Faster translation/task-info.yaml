@@ -171,5 +171,5 @@ files:
         TranslatorTest('translator.translator').run_tests()
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/8975#comment
-status: Unchecked
-record: -1
+status: Solved
+record: 5
