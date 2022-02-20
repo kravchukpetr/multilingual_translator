@@ -65,10 +65,19 @@ else:
     parser.add_argument("word")
     args = parser.parse_args()
 
-    lang_from = [key for key, value in lang_dict.items() if args.lang_from == value.lower()][0]
-    lang_to = 0 if args.lang_to == 'all' else [key for key, value in lang_dict.items() if args.lang_to == value.lower()][0]
+    try:
+        lang_from = [key for key, value in lang_dict.items() if args.lang_from == value.lower()][0]
+    except IndexError:
+        print("Sorry, the program doesn't support {0}".format(args.lang_from))
+        quit()
+    try:
+        lang_to = 0 if args.lang_to == 'all' else [key for key, value in lang_dict.items() if args.lang_to == value.lower()][0]
+    except IndexError:
+        print("Sorry, the program doesn't support {0}".format(args.lang_to))
+        quit()
     word = args.word
     n_translate = 1 if args.lang_to == 'all' else 5
+
     for lang_key, lang_val in lang_dict.items():
         translate_list = []
         example_list = []
@@ -76,7 +85,11 @@ else:
             if lang_to == 0 or (lang_to != 0 and lang_to == lang_key):
                 url = "https://context.reverso.net/translation/{0}-{1}/{2}".format(lang_dict[lang_from].lower(), lang_dict[lang_key].lower(), word)
                 # print(url)
-                r = requests.get(url, headers=headers)
+                try:
+                    r = requests.get(url, headers=headers)
+                except ConnectionError:
+                    print('Something wrong with your internet connection')
+                    quit()
                 if r.status_code == 200:
                     # print(r.status_code, 'OK')
                     soup = BeautifulSoup(r.content, 'html.parser')
@@ -90,6 +103,9 @@ else:
                     for example in example_result:
                         example_list.append(example.text.strip())
                     translate_dict[lang_dict[lang_key]]['example'] = example_list
-    print_result(translate_dict, n_translate)
-    save_to_file(translate_dict, n_translate, word)
+                elif r.status_code == 404:
+                    print("Sorry, unable to find {0}".format(word))
+                    quit()
+print_result(translate_dict, n_translate)
+save_to_file(translate_dict, n_translate, word)
 
